@@ -3,7 +3,7 @@
 findTransvection := function(G,n,p);
       CC := ConjugacyClasses(G);
       
-      IdMat := Matrix(GF(p),Identity(G));
+      IdMat := IdentityMatrix(GF(p),n);
       for i in [1..#CC] do;
           CCrep := CC[i][3];
 	  repMat := Matrix(GF(p), CCrep);
