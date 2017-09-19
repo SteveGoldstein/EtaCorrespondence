@@ -1,0 +1,2 @@
+for p in 11 13 19 23 29; do for n in 2 3 4; do nohup magma -b n:=$n p:=$p bin/computeHO_TRank.m > out_0/GL_${n}_$p.raw & done; done >& out_0/err.2-4_11-29 
+
