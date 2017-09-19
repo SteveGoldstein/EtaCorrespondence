@@ -5,38 +5,33 @@ findHigherOrderTransvections := function(G,n,p);
       Z := IntegerRing();
       if IsOdd(n) then
 	  bMinus := (n-1)/2;
-	  bPlus  := (n+1)/2;
       else
 	  bMinus := n/2;
-	  bPlus  := n/2;
       end if;
       
       // First build the matrices of interest;
+      //   Block matrices of the form
+      //   [ I  A]
+      //   [ 0  I]
+      //   Where A is mxm if n = 2m
+      //   or A is mx(m+1)   n = 2m+1;
+      //    and rank(A) = k, k = 1..m  
+      
       // For convenience, start with the identity;  we'll remove it at the end;
       IdMat := IdentityMatrix(GF(p),n);
       matOfInterest := [IdMat];
 
       ZeroMat := ZeroMatrix(GF(p), n, n);
-      for i in [1..Z!bMinus] do
+      for k in [1..Z!bMinus] do
+	  // A is mxm+1 of rank k;
 	  u := ZeroMat;
-	  u[i][i+Z!bMinus] := 1;
+	  u[k][k+Z!bMinus] := 1;
 	  Append(~matOfInterest, matOfInterest[#matOfInterest] +u);
       end for;
 
-      if IsOdd(n) then
-	  matPlus := [IdMat];
-	  for i in [1..Z!bMinus] do
-	      u := ZeroMat;
-	      u[i][i+Z!bPlus] := 1;
-	      Append(~matPlus, matPlus[#matPlus] +u);
-	  end for;
-	  Remove(~matPlus,1);
-	  matOfInterest cat:= matPlus;
-      end if;
-      
       Remove(~matOfInterest, 1);
-      matOfInterest;
-      "";
+      // matOfInterest;
+      // "";
       
       eltOfInterest := [G!M : M in matOfInterest];
       // now find the conjugacy classes for each of the matrices;
@@ -49,10 +44,8 @@ findHigherOrderTransvections := function(G,n,p);
 	  end if;
 	  
 	  for j in [1..#eltOfInterest] do
-
 	      if IsConjugate(G, eltOfInterest[j], CC[i][3]) then
 		  Append(~ccIndexOfInterest, i);
-		  //eltOfInterest[j], CC[i][3],i;
 		  Remove(~eltOfInterest, j);
 		  break;
 	      end if;

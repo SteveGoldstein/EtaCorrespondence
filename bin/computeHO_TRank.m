@@ -5,9 +5,11 @@
 // Preliminaries
 //load "lib/findTransvection.m";
 load "lib/findHigherOrderTransvections.m";
+SetColumns(0);
+SetAutoColumns(false);
 
-n := 2;
-p := 5;
+n := StringToInteger(n);
+p := StringToInteger(p);
 
 G := GL(n,p);
 X := CharacterTable(G);
@@ -36,44 +38,48 @@ weightedInnerProduct := function (G,x,y);
    return sum/#G;
 end function;
 
-
-SetColumns(0);
-SetAutoColumns(false);
-
 //sumOfRank1 := &+[X[i] : i in [2..5] ];
 chiPi := [ permutRepCharacter(G,n,p,i) : i in [1..#X]];
 
+C<i> := ComplexField(3);
 seenIt := {};
 nonZeroIP  := [];
+
+header := [* "power", "rho", "dim", "innerProduct" *];
+CC := ConjugacyClasses(G);
+for t in higherOrderTransvectionIndices do
+    mat := Matrix(GF(p), CC[t][3]);
+    rk := Rank(IdentityMatrix(GF(p),n)-mat);
+    Append(~header, Sprintf("CharRatioForRank:%o",rk));
+end for;
+header;
+
     
-C<i> := ComplexField(3);
-for transvectionIndex in higherOrderTransvectionIndices do
-    seenIt := {};
-    nonZeroIP  := [];
-
-    for power in [0..n] do
-
-	for rho in [1..#X] do
-            if rho in seenIt then
-		continue;
-            end if;
-	chiPiPower := [chiPi[i]^power : i in [1..#chiPi]];
-        ip := weightedInnerProduct(G,chiPiPower,X[rho]);
-        if ip ne 0 then;
-            Include(~seenIt, rho);
-	    
-            dim := X[rho][1];
-            charValue := X[rho][transvectionIndex];
-            charRatio := charValue/dim;
-            Append(~nonZeroIP,
-                   [* power,rho,dim,ip,C!charRatio,Abs(C!charRatio) *]
-
-                  );
+for power in [0..n] do
+    
+    chiPiPower := [chiPi[i]^power : i in [1..#chiPi]];
+    for rho in [1..#X] do
+        if rho in seenIt then
+	    continue;
         end if;
-	end for;
-    end for;
 
-    printf "%o\n", nonZeroIP;
+        ip := weightedInnerProduct(G,chiPiPower,X[rho]);
+        if ip ne 0 then
+	    Include(~seenIt, rho);
+		
+	    dim := X[rho][1];
+	    charRatios := [C!X[rho][i]/dim : i in higherOrderTransvectionIndices];
+	    absCharRatios := [* Abs(x) : x in charRatios *];
+	    thisRow := [* power, rho,dim, ip *];
+	    thisRow := thisRow cat absCharRatios;
+	    Append(~nonZeroIP, thisRow);
+  
+        end if;
+    end for;
+end for;
+
+for nzIP in nonZeroIP do
+    printf "%o\n", nzIP;
 end for;
 
 quit;
