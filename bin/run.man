@@ -1,2 +1,14 @@
 for p in 11 13 19 23 29; do for n in 2 3 4; do nohup magma -b n:=$n p:=$p bin/computeHO_TRank.m > out_0/GL_${n}_$p.raw & done; done >& out_0/err.2-4_11-29 
 
+
+
+for n in {2..5}; do for p in 3 5 7 11; do nohup magma -b n:=$n p:=$p bin/computeHO_TRank.m > out_0/GL_${n}_$p.raw & done; done >& out_0/err.n2-5.p3-11 
+
+for n in {2..5}; do for p in 3; do nohup magma -b n:=$n p:=$p bin/computeHO_TRank.m > out_0/GL_${n}_$p.raw & done; done >& out_0/err.n2-5.p3 
+for n in {6..10}; do for p in 3; do nohup magma -b n:=$n p:=$p bin/computeHO_TRank.m > out_0/GL_${n}_$p.raw & done; done >& out_0/err.n6-10.p3 &
+
+for n in 6; do for p in 5 7 11; do nohup magma -b n:=$n p:=$p bin/computeHO_TRank.m > out_0/GL_${n}_$p.raw & done; done >& out_0/err.n6.p5-11
+
+for n in 7; do for p in 5 7 11; do nohup magma -b n:=$n p:=$p bin/computeHO_TRank.m > out_0/GL_${n}_$p.raw; done; done >& out_0/err.n7.p5-11  &
+
+for n in 8; do for p in 5 7 11; do nohup magma -b n:=$n p:=$p bin/computeHO_TRank.m > out_0/GL_${n}_$p.raw; done; done >& out_0/err.n8.p5-11 &
