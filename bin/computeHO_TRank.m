@@ -86,7 +86,7 @@ for power in [0..n] do
 		thisRow := [* power, rho,dim, ip *];
 		thisRow := thisRow cat absCharRatios;
 		Append(~nonZeroIP, thisRow);
-  
+		break;
             end if;  // if ip ne 0
 	end for; // for oneD
     end for; // for rho

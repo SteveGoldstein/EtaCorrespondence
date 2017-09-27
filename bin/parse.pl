@@ -1,3 +1,17 @@
+#!/usr/bin/perl -w
+
+use strict;
+use Carp;
+use English;
+use Getopt::Long;
+use Cwd;
+
+GetOptions (
+
+            );
+
+
+__END__
 
  for f in  out_0/GL_*.raw; do  g=$(basename $f); g=${g/raw/txt};cat $f |perl -nae 'chomp;if (s/^\[\*\s*//) {$line = ""} if (s/\*\]\s*$//) { $line .= $_; push @lines, $line; $line = "";next}  $line .= $_; END{print join("\n", @lines), "\n"}' > out_0-parsed/$g; done
 
