@@ -1,0 +1,1 @@
+ps -eafww|grep n:= |grep -v bash|grep -v grep |perl -nale 'map{s/^.*:=//;} @F; print join "\t", @F[-3,-2]'|sort -k1,1n -k2,2n
