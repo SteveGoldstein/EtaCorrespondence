@@ -1,1 +1,6 @@
 out_*/
+*.zip
+
+*.zip
+*.err
+.nfs*
