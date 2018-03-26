@@ -44,16 +44,17 @@ while(<>) {
 }
 
 my $header = $out[0];
-my @charRatioCols;
+my @AbsCharRatioCols;
 foreach my $index (0..$#$header) {
-    if ($header -> [$index] =~ /^CharRatio/) {
-	push @charRatioCols, $index;
+    if ($header -> [$index] =~ /^AbsCharRatio/) {
+	push @AbsCharRatioCols, $index;
 	push @$header, sprintf("-log%d_%s", $q,$header -> [$index]);	
     }
 }
+map{print join("\t", $_, $header->[$_]), "\n";} @AbsCharRatioCols;
 
 foreach my $line (@out[1..$#out]) {
-    foreach my $index (@charRatioCols) {
+    foreach my $index (@AbsCharRatioCols) {
 	my $ratio = $line -> [$index];
 	if ($ratio == 0) {
 	    push @$line, "NA";
@@ -64,6 +65,9 @@ foreach my $line (@out[1..$#out]) {
 		$log = 0;
 	    }
 	    else {
+		if ($ratio < 0) {
+		    print "$index\n @$line\n $ratio\n";
+		}
 		$log = sprintf ("%1.3f", -log($ratio)/log($q));
 	    }
 	    push @$line, $log;
@@ -80,3 +84,5 @@ __END__
  for f in  out_0/GL_*.raw; do  g=$(basename $f); g=${g/raw/txt};cat $f |perl -nae 'chomp;if (s/^\[\*\s*//) {$line = ""} if (s/\*\]\s*$//) { $line .= $_; push @lines, $line; $line = "";next}  $line .= $_; END{print join("\n", @lines), "\n"}' > out_0-parsed/$g; done
 
  for f in  out_0/GL_*.raw; do  g=$(basename $f); g=${g/raw/txt};cat $f |bin/parse.pl > out_0-parsed/$g; done
+
+ for f in out_2/GL_*raw; do  g=$(basename $f); g=${g/raw/csv}; bin/parse.pl $f > out_2-parsed/$g; done

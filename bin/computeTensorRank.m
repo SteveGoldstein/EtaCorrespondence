@@ -57,6 +57,7 @@ for t in higherOrderTransvectionIndices do
     rk := Rank(IdentityMatrix(GF(p),n)-mat);
     Append(~header, Sprintf("CharRatioForRank:%o",rk));
     Append(~header, Sprintf("AbsCharRatioForRank:%o", rk));
+    Append(~header, Sprintf("-log%o_AbsCharRatioForRank:%o", p, rk));
 end for;
 header;
 
@@ -80,10 +81,19 @@ for power in [0..n] do
 		Include(~seenIt, rho);
 		
 		dim := X[rho][1];
-		charRatios := [* C!X[rho][i]/dim : i in higherOrderTransvectionIndices *];
-		absCharRatios := [* Abs(x) : x in charRatios *];
 		thisRow := [* power,rho,dim *];
-		thisRow := thisRow cat charRatios cat absCharRatios;
+		for i in higherOrderTransvectionIndices do
+		    charRatio := C!X[rho][i]/dim;
+		    Append(~thisRow, charRatio);
+		    absCharRatio := Abs(charRatio);
+		    Append(~thisRow, absCharRatio);
+		    if (absCharRatio gt 0) then
+			logCharRatio := Sprintf("%.2o", -Log(p, absCharRatio));
+			Append(~thisRow, logCharRatio);
+		    else
+			Append(~thisRow, "NA");
+		    end if;
+		end for; //for i
 		Append(~nonZeroIP, thisRow);
 		break;
             end if;  // if ip ne 0
