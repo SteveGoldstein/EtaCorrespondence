@@ -1,0 +1,3 @@
+
+for f in out_3/GL_*raw; do  g=$(basename $f); g=${g/raw/csv}; cat $f | perl -F, -nale 'next if /^Loading/; if (/power/) {$F[0] = "TensorRank"} map{s/[\[\]\*]//g; s/\s*//g; s/^-0.00$/0/;} @F; print join ", ", @F' > out_3-parsed/$g; done
+
