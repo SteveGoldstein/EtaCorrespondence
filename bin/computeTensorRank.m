@@ -1,6 +1,6 @@
-// magma -b n:=<N> p:=<P> bin/computeTensorRank.m
+// magma -b n:=<N> p:=<P>  bin/computeTensorRank.m |grep -v '^Loading' > GLn-p.mgm
 
-// 
+// write vector with ranks; 
 
 // Preliminaries
 SetColumns(0);
@@ -50,9 +50,6 @@ C<i> := ComplexField(3);
 seenIt := {};
 nonZeroIP  := [];
 
-header := [* "TensorRank", "rho", "dim", "innerProduct" *];
-header;
-
     
 for power in [0..n] do
     
@@ -73,7 +70,7 @@ for power in [0..n] do
 		Include(~seenIt, rho);
 		
 		dim := X[rho][1];
-		thisRow := [* power,rho,dim,ip *];
+		thisRow := [* power,rho,dim,IntegerRing()!ip *];
 		Append(~nonZeroIP, thisRow);
 		break;
             end if;  // if ip ne 0
@@ -81,9 +78,16 @@ for power in [0..n] do
     end for; // for rho
 end for;  //for power
 
+[nonZeroIP[i,1]:i in [1..#nonZeroIP]] : Magma;
+
+/*
+header := [* "TensorRank", "rho", "dim", "innerProduct" *];
+header;
+header;
 for nzIP in nonZeroIP do
-    printf "%o\n", nzIP;
+   printf "%o\n", nzIP;
 end for;
+*/
 
 quit;
 
