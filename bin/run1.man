@@ -1,8 +1,0 @@
-for n in 2; do for p in 3 5 7 11 13 17 19; do nohup magma -b n:=$n p:=$p bin/computeTensorRank.m > out_1/GL_${n}_$p.raw & done; done >& out_1/err.n2.p3-19 
-for n in 3; do for p in 3 5 7 11; do nohup magma -b n:=$n p:=$p bin/computeTensorRank.m > out_1/GL_${n}_$p.raw & done; done >& out_1/err.n3.p3-11 
-
- for n in 4; do for p in 3 5 7; do nohup magma -b n:=$n p:=$p bin/computeTensorRank.m > out_1/GL_${n}_$p.raw & done; done >& out_1/err.n4.p3-7
-
-for n in 5; do for p in 3 5; do nohup magma -b n:=$n p:=$p bin/computeTensorRank.m > out_1/GL_${n}_$p.raw & done; done >& out_1/err.n5.p3-5
-
- for n in 6 7; do for p in 3; do nohup magma -b n:=$n p:=$p bin/computeTensorRank.m > out_1/GL_${n}_$p.raw & done; done >& out_1/err.n6-7.p3
