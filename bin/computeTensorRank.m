@@ -1,19 +1,18 @@
-// magma -b n:=<N> p:=<P> bin/computeTRank.m
+// magma -b n:=<N> p:=<P> bin/computeTensorRank.m
 
 // 
 
 // Preliminaries
-load "lib/findHigherOrderTransvections.m";
 SetColumns(0);
 SetAutoColumns(false);
 
 n := StringToInteger(n);
 p := StringToInteger(p);
 
-G := GL(n,p);
+G := ReadGL(n,p);
 X := CharacterTable(G);
 
-higherOrderTransvectionIndices := findHigherOrderTransvections(G, n, p);
+
 
 //
 permutRepCharacter := function (G,n,p,index)
@@ -22,7 +21,7 @@ permutRepCharacter := function (G,n,p,index)
     ClassRep := CC[index][3];
     ClassRepMat := Matrix(GF(p), ClassRep);
     exponent := n - Rank(IdentityMatrix(GF(p),n) - ClassRepMat);
-    return p^exponent;					
+    return p^exponent-1;					
 
 end function;
 
@@ -51,14 +50,7 @@ C<i> := ComplexField(3);
 seenIt := {};
 nonZeroIP  := [];
 
-header := [* "power", "rho", "dim" *];
-for t in higherOrderTransvectionIndices do
-    mat := Matrix(GF(p), CC[t][3]);
-    rk := Rank(IdentityMatrix(GF(p),n)-mat);
-    Append(~header, Sprintf("CharRatioForRank:%o",rk));
-    Append(~header, Sprintf("AbsCharRatioForRank:%o", rk));
-    Append(~header, Sprintf("-log%o_AbsCharRatioForRank:%o", p, rk));
-end for;
+header := [* "TensorRank", "rho", "dim", "innerProduct" *];
 header;
 
     
@@ -81,19 +73,7 @@ for power in [0..n] do
 		Include(~seenIt, rho);
 		
 		dim := X[rho][1];
-		thisRow := [* power,rho,dim *];
-		for i in higherOrderTransvectionIndices do
-		    charRatio := C!X[rho][i]/dim;
-		    Append(~thisRow, charRatio);
-		    absCharRatio := Abs(charRatio);
-		    Append(~thisRow, absCharRatio);
-		    if (absCharRatio gt 0) then
-			logCharRatio := Sprintf("%.2o", -Log(p, absCharRatio));
-			Append(~thisRow, logCharRatio);
-		    else
-			Append(~thisRow, "NA");
-		    end if;
-		end for; //for i
+		thisRow := [* power,rho,dim,ip *];
 		Append(~nonZeroIP, thisRow);
 		break;
             end if;  // if ip ne 0
@@ -108,8 +88,6 @@ end for;
 quit;
 
 /*
-
-for n in 4 6 8; do for p in 3 5; do magmanew -b n:=$n p:=$p bin/omegaXomega.m | perl -nale ' next if /Loading/; if ($.==2) {s/^\[\s+//} if (eof) {s/\]\s*$//}; s/\[\s*\*\s*//; s/\*\],?\s*/\n/; s/\s*$//; $text .= $_; END{print join ",", "rank", "index", "dim", "inner prod", "charRatio","Abs(charRatio)", "multiplicities"; print $text}'|perl -F, -nale 'print join("\t", @F[0..3,5]), "\t", join(",", @F[6..$#F]), "\t$F[4]";' > Tables/v3/Sp${n}_$p.withAbsCharRatio.txt& done; done                            
 
 */
         

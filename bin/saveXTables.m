@@ -32,10 +32,17 @@ n=2; for p in 11 13 17 19 23 29 31 37 41; do magma -b n:=$n p:=$p file:=~/MAGMA/
 
 n=3; for p in 11 13 17 19; do magma -b n:=$n p:=$p file:=~/MAGMA/CharacterTable/xtab_gl$n-${p}_af.db bin/saveXTables.m >& xtab_gl$n-$p.err & done
 
-*/
 
 
 
 
  n=3; for p in 17 19; do nohup magma -b n:=$n p:=$p file:=~/MAGMA/CharacterTable.nohup/xtab_gl$n-${p}_af.db bin/saveXTables.m &> xtab_gl$n-$p.nohup.err & done
 n=4; for p in 7; do nohup magma -b n:=$n p:=$p file:=~/MAGMA/CharacterTable.nohup/xtab_gl$n-${p}_af.db bin/saveXTables.m &> xtab_gl$n-$p.nohup.err & done
+
+n=3; for p in 23; do nohup magma -b n:=$n p:=$p file:=~/MAGMA/CharacterTable/xtab_gl$n-${p}_af.db bin/saveXTables.m &> xtab_gl$n-$p.err & done
+
+*/
+n=3; for p in 23; do nohup magma -b n:=$n p:=$p file:=~/MAGMA/CharacterTable/xtab_gl$n-${p}_af.db bin/saveXTables.m &> xtab_gl$n-$p.err & done
+n=4; for p in 11; do nohup magma -b n:=$n p:=$p file:=~/MAGMA/CharacterTable/xtab_gl$n-${p}_af.db bin/saveXTables.m &> xtab_gl$n-$p.err & done
+n=6; for p in 5; do nohup magma -b n:=$n p:=$p file:=~/MAGMA/CharacterTable/xtab_gl$n-${p}_af.db bin/saveXTables.m &> xtab_gl$n-$p.err & done
+n=7; for p in 5; do nohup magma -b n:=$n p:=$p file:=~/MAGMA/CharacterTable/xtab_gl$n-${p}_af.db bin/saveXTables.m &> xtab_gl$n-$p.err & done

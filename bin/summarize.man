@@ -1,0 +1,1 @@
+for f in Ranks/GL*; do g=${f/ranks/rankSummary}; cat $f| perl -F, -nale 'next if ($.==1);map{s/\s//g} @F; $h[$F[0]]->{$F[2]} ++; END{print join ",", "TRank", "dim", "numIrreps";  foreach $i (0..$#h) {@k = sort {$a<=>$b} keys %{$h[$i]} ; map {print join ",", $i, $_,$h[$i]->{$_}}  @k}  }' > $g; done
