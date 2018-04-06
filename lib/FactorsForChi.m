@@ -62,24 +62,22 @@ end function;
 
 
 // Chi_Eta(nu)(g) = innerproduct(chi_nu dot chi_omega(g, dot);
-// todo:   figure out how to do this calculation in a smaller field
-//   extension that contains weighted inner product (i.e. the char tables)
-//
-//  how?  try putting the values into a struct [* *] and then
-//  coercising at the end?
-//  or maybe it doesn't need coercing.
 Chi_Eta := function( Xtab_H, chi_omega, order_H, CC_H)
     r := NumberOfRows(chi_omega);
     c := #Xtab_H;  
 
-    Chi_Eta := ZeroMatrix(ComplexField(), r,c);
+    Chi_Eta := [];
     for i in [1..r] do
-	for j in [1..c] do
-	    Chi_Eta[i][j] := weightedInnerProduct(order_H, CC_H, chi_omega[i], Xtab_H[j]);
-	end for;  
-    end for;
+	row := [weightedInnerProduct(order_H, CC_H, chi_omega[i], Xtab_H[j])
+		: j in [1..c]
+	       ];
+	Append(~Chi_Eta,row);
 
-    return Chi_Eta;
+    end for;
+    U := Universe([Chi_Eta[i,1]:i in [1..#Chi_Eta]]);
+    Chi_EtaMatrix := Matrix(U, Chi_Eta);
+    
+    return Chi_EtaMatrix;
 end function;
 
 
