@@ -4,7 +4,8 @@
 
 // Preliminaries
 load "lib/ReadTensorRank.m";
-load "lib/EigenvaluesForElements.m";
+load "lib/TensorEigenvalues.m";
+load "lib/FactorsForChi.m";
 
 SetColumns(0);
 SetAutoColumns(false);
@@ -19,14 +20,60 @@ GLk := ReadGL(k,p);
 X := CharacterTable(GLn);
 Y := CharacterTable(GLk);
 
+TensorRank_n := ReadTensorRank(n,p);
+TensorRank_k := ReadTensorRank(k,p);
+
 CCn := GLn`Classes;
 CCk := GLk`Classes;
 
 ev_n := EigenvaluesForCCRep(CCn, n, p);
 ev_k := EigenvaluesForCCRep(CCk, k, p);
 
-ev_k;
-ev_n;
+// Compute determinants for tensor product;
+NullCounts, Determins := TensorProductEV(ev_n, ev_k, GF(p));
+chi_omega := Chi_omega(NullCounts, Determins, n,k,p);
+chi_Eta := Chi_Eta( Y, chi_omega, #GLk, CCk);
+
+Parent(chi_omega);
+Type(chi_omega);
+Parent(chi_Eta);
+Type (chi_Eta);
+
+
+eps := 10^-10;
+for i in [1..#X] do
+    for j in [1..NumberOfColumns(chi_Eta)] do
+	chi_EtaColumn := [ chi_Eta[l][j] : l in [1..NumberOfRows(chi_Eta)]];
+	c := chi_EtaColumn;
+	x := [ComplexField()!X[i,l] : l in [1..#X]]; 
+	ip := weightedInnerProduct(#GLn, CCn, x, chi_EtaColumn);
+	//ip := weightedInnerProduct(#GLn, CCn, X[i], chi_EtaColumn);
+	if Abs(ip) gt eps then
+	    i , " and ", j, "are nonzero: tensor ranks", TensorRank_n[i], TensorRank_k[j];
+
+	    if i eq 7 and j eq 1 then
+
+		Parent([X[i,l] : l in [1..#X]]);
+		Type([X[i,l] : l in [1..#X]]);
+		Universe([X[i,l] : l in [1..#X]]); 
+
+		"chi_EtaColumn", c;
+		"X", [X[i,l]: l in [1..#X]];
+	    end if;
+	    if i eq 7 and j eq 2 then
+
+		Parent([X[i,l] : l in [1..#X]]);
+		Type([X[i,l] : l in [1..#X]]);
+		Universe([X[i,l] : l in [1..#X]]); 
+
+
+		"chi_EtaColumn", c;
+		"X", [X[i,l]: l in [1..#X]];
+	    end if;
+
+	end if;
+    end for;
+end for;
 
 
 /*
