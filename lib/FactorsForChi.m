@@ -68,7 +68,8 @@ Chi_Eta := function( Xtab_H, chi_omega, order_H, CC_H)
 
     Chi_Eta := [];
     for i in [1..r] do
-	row := [weightedInnerProduct(order_H, CC_H, chi_omega[i], Xtab_H[j])
+	//row := [weightedInnerProduct(order_H, CC_H, chi_omega[i], Xtab_H[j])
+	row := [weightedInnerProduct(order_H, CC_H, Xtab_H[j], chi_omega[i])
 		: j in [1..c]
 	       ];
 	Append(~Chi_Eta,row);
