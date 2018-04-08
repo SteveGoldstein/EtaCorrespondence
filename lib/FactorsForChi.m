@@ -32,7 +32,7 @@ LegendreSymbol := function(detQ,p)
 end function;
 
 //NullCounts, Determins := TensorProductEV(ev_n, ev_k, GF(p));
-Chi_omega := function(NullCounts, Determins, n,k,p)
+Chi_omega_First := function(NullCounts, Determins, n,k,p)
     r := NumberOfRows(NullCounts);
     c := NumberOfColumns(NullCounts);
     chi_omega := ZeroMatrix(IntegerRing(), r, c);
@@ -46,6 +46,29 @@ Chi_omega := function(NullCounts, Determins, n,k,p)
 
 	    chi_omega[i][j] := p^nullRank * G_sq^((2*n*k - nullRank)/2) * legSym/p^(n*k);
 	    
+	    
+	end for; // for j=1..c
+    end for; //for i=1..r
+    return chi_omega;
+end function;
+
+Chi_omega := function(CCn, CCk, n,k,p)
+    r := #CCn; //Conj classes of GLn
+    c := #CCk; //Conj classes of GLk
+    chi_omega := ZeroMatrix(IntegerRing(), r, c);
+
+    for i in [1..r] do
+	g := CCn[i][3];
+	for j in [1..c] do
+	    h := CCk[j][3];
+	    detG := Determinant(g);
+	    detH := Determinant(h);
+	    legSym := LegendreSymbol(detG^k*detH^n,p);
+
+	    gTh := TensorProduct(g,h);
+	    numFixedPoints := p^(n*k -Rank(gTh - IdentityMatrix(GF(p),n*k)));
+	    
+	    chi_omega[i][j] := legSym * numFixedPoints;
 	end for; // for j=1..c
     end for; //for i=1..r
     return chi_omega;
@@ -68,8 +91,7 @@ Chi_Eta := function( Xtab_H, chi_omega, order_H, CC_H)
 
     Chi_Eta := [];
     for i in [1..r] do
-	//row := [weightedInnerProduct(order_H, CC_H, chi_omega[i], Xtab_H[j])
-	row := [weightedInnerProduct(order_H, CC_H, Xtab_H[j], chi_omega[i])
+	row := [weightedInnerProduct(order_H, CC_H, chi_omega[i], Xtab_H[j])
 		: j in [1..c]
 	       ];
 	Append(~Chi_Eta,row);
