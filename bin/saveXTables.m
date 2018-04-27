@@ -2,7 +2,7 @@
 
 //Simple script to save the character tables of GLn;
 
-load "../lib/save_group.m";
+load "../../lib/save_group.m";
 
 SetColumns(0);
 SetAutoColumns(false);
