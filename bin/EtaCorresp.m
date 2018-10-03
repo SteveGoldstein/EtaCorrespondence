@@ -58,3 +58,11 @@ end for;
 
 quit;
         
+/*
+
+to do:
+1.  use SetOutputFile and file:=...
+2.  write k in output
+3.  iterate over k;
+
+*/
