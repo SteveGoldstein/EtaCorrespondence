@@ -1,0 +1,3 @@
+
+ ls Ranks/*s.csv|perl -nale 'BEGIN{print "#!/bin/bash\n\n"; } /(\d+)\-(\d+)\./; print "nohup magma -b n:=$1 p:=$2 bin/organizeCharacterTable.m 2> XRatios/GL$1-$2.ratios.err |grep -v Loading > XRatios/GL$1-$2.ratios.csv & "' > bin/organizeCharacterTable.sh
+
