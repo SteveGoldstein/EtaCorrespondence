@@ -1,0 +1,28 @@
+Construction of reps:
+
+Shamgar:  Should we do general or GL3?
+S:        Let's do GL2.  Or is it too trivial?
+
+Sh:       It's trivial....  <joke>
+	       could do a cartoon
+
+====================================
+Question of how to build cuspidals;  (rank n,  i.e. rank 2 for
+GL2.. construction is circular... tautological)
+
+Start with GL3
+
+0
+
+1
+
+2
+
+3
+==================================
+could do 0 and 1 from before;
+
+but do it iteratively:
+
+GL(0):  trivial
+

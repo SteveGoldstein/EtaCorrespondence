@@ -46,7 +46,7 @@ for i in [1..#X] do
     end if;
 end for;
 
-C<i> := ComplexField(30);
+C<i> := ComplexField(3);
 seenIt := {};
 nonZeroIP  := [];
 
@@ -79,17 +79,18 @@ for power in [0..n] do
 end for;  //for power
 
 //sort the rank structure by index of the representation;
-//Sort(~nonZeroIP,func<x,y|x[2]-y[2]>);
+Sort(~nonZeroIP,func<x,y|x[2]-y[2]>);
 //print to a file the list of ranks (and they will be indexed in order 1..#X)
-//[nonZeroIP[i,1]:i in [1..#nonZeroIP]] : Magma;
+[nonZeroIP[i,1]:i in [1..#nonZeroIP]] : Magma;
 
-
+/*
 header := [* "TensorRank", "rho", "dim", "innerProduct" *];
+header;
 header;
 for nzIP in nonZeroIP do
    printf "%o\n", nzIP;
 end for;
-
+*/
 
 quit;
 
