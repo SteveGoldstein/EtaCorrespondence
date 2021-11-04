@@ -1,6 +1,6 @@
 //
 
-Rank_Dir := "/staff/sgoldstein/MAGMA/etaCorrespondence/GLn/Ranks";
+Rank_Dir := "/staff/sgoldstein/MAGMA/etaCorrespondence/GL/Ranks";
 MAGMANEW := true;
 
 ReadTensorRank := function(n,q)
